@@ -10,7 +10,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         // Set up the background size
-        if let background = childNode(withName: "background") as? SKSpriteNode {
+        if let background = childNode(withName: "seascape") as? SKSpriteNode {
             background.size = self.size
         }
         
@@ -181,10 +181,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.text = "Score: \(score)"
         
         for node in children {
-            if node.name != "seaTurtle" && node.name != "scoreLabel" && node.name != "background" {
+            if node.name != "seaTurtle" && node.name != "scoreLabel" && node.name != "seascape" {
                 node.removeFromParent()
             }
         }
+        
+        if let background = self.childNode(withName: "seascape") as? SKSpriteNode {
+                        background.zPosition = -1  // Pastikan background berada di belakang semua elemen
+                    } else {
+                        // Jika background tidak ditemukan, tambahkan ulang
+                        let background = SKSpriteNode(imageNamed: "seascape") // Ganti dengan nama file background Anda
+                        background.name = "seascape"
+                        background.zPosition = -1
+                        background.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
+                        self.addChild(background)
+                    }
         
         startSpawningJellyFishes()
         startSpawningTrashBags()
